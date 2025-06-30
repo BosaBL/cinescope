@@ -1,15 +1,59 @@
-import { Link } from '@tanstack/react-router'
-import { useState } from 'react'
+import {
+  Link,
+  useLoaderData,
+  useNavigate,
+  useSearch,
+} from '@tanstack/react-router'
+import { useEffect, useState } from 'react'
 import {
   Bars3Icon,
+  FunnelIcon,
   MagnifyingGlassIcon,
   XMarkIcon,
 } from '@heroicons/react/24/outline'
 import { SearchField } from './SearchField'
+import { getWatchlist } from '@/services/watchlist'
 
 export function NavigationBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
+  const [isFilterOpen, setIsFilterOpen] = useState(false)
+  const [genre, setGenre] = useState<string>('')
+  const [year, setYear] = useState<number>(0)
+  const [watchlistCount, setWatchlistCount] = useState(0)
+  const search = useSearch({ strict: false })
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if ('with_genres' in search) {
+      setGenre(search.with_genres || '')
+      setYear(search.primary_release_year || 0)
+    }
+  }, [search])
+
+  useEffect(() => {
+    const updateWatchlistCount = () => {
+      setWatchlistCount(getWatchlist().length)
+    }
+
+    updateWatchlistCount()
+
+    window.addEventListener('localStorageUpdate', updateWatchlistCount)
+
+    return () => {
+      window.removeEventListener('localStorageUpdate', updateWatchlistCount)
+    }
+  }, [])
+
+  const { genres } = useLoaderData({ from: '__root__' })
+
+  useEffect(() => {
+    if (isMenuOpen || isFilterOpen) {
+      document.body.classList.add('overflow-y-hidden')
+    } else {
+      document.body.classList.remove('overflow-y-hidden')
+    }
+  }, [isFilterOpen, isSearchOpen, isMenuOpen])
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
@@ -17,6 +61,28 @@ export function NavigationBar() {
 
   const toggleSearch = () => {
     setIsSearchOpen(!isSearchOpen)
+  }
+
+  const toggleFilter = () => {
+    setIsFilterOpen(!isFilterOpen)
+  }
+
+  const handleResetFilters = () => {
+    setGenre('')
+    setYear(0)
+  }
+
+  const onSubmitFilter = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    toggleFilter()
+    navigate({
+      to: '/',
+      search: (old) => ({
+        ...old,
+        with_genres: genre || undefined,
+        primary_release_year: year || undefined,
+      }),
+    })
   }
 
   return (
@@ -54,6 +120,11 @@ export function NavigationBar() {
                     activeProps={{ className: 'font-bold active' }}
                   >
                     Mis Películas
+                    {watchlistCount > 0 && (
+                      <span className="bg-primary-muted text-accent-foreground absolute top-1/6 -right-5 flex h-5 w-5 items-center justify-center rounded-full text-xs font-bold">
+                        {watchlistCount}
+                      </span>
+                    )}
                     <div className="bg-primary absolute bottom-0 left-0 h-1 w-0 rounded-full transition-all duration-300 group-[.active]:w-full" />
                   </Link>
                 </li>
@@ -62,8 +133,13 @@ export function NavigationBar() {
 
             {/* Desktop Search & Mobile Buttons */}
             <div className="flex items-center">
-              {/* Desktop Search */}
-              <SearchField className="hidden md:flex" />
+              {/* Desktop Search and Filter */}
+              <div className="hidden items-center space-x-2 md:flex">
+                <SearchField />
+                <button onClick={toggleFilter} className="cursor-pointer p-2">
+                  <FunnelIcon className="h-6 w-6" />
+                </button>
+              </div>
 
               {/* Mobile Buttons */}
               <div className="flex items-center md:hidden">
@@ -73,6 +149,9 @@ export function NavigationBar() {
                  */}
                 <button onClick={toggleSearch} className="cursor-pointer p-2">
                   <MagnifyingGlassIcon className="h-6 w-6" />
+                </button>
+                <button onClick={toggleFilter} className="cursor-pointer p-2">
+                  <FunnelIcon className="h-6 w-6" />
                 </button>
                 <button onClick={toggleMenu} className="cursor-pointer p-2">
                   <Bars3Icon className="h-6 w-6" />
@@ -152,11 +231,98 @@ export function NavigationBar() {
                 activeProps={{ className: 'font-bold active pl-2' }}
                 onClick={toggleMenu}
               >
-                Inicio
+                Mis Películas
+                {watchlistCount > 0 && (
+                  <span className="bg-primary-muted text-accent-foreground ml-2 flex h-5 w-5 items-center justify-center rounded-full text-xs font-bold">
+                    {watchlistCount}
+                  </span>
+                )}
                 <div className="bg-primary absolute top-0 left-0 h-full w-0 rounded-full transition-all duration-300 group-[.active]:w-1" />
               </Link>
             </li>
           </ul>
+        </div>
+      </div>
+
+      {/* Filter Overlay */}
+      <div
+        className={`fixed inset-0 z-50 flex items-center justify-center ${
+          isFilterOpen ? '' : 'pointer-events-none'
+        }`}
+      >
+        {/* Backdrop */}
+        <div
+          className={`absolute inset-0 bg-black/50 transition-opacity duration-300 ${
+            isFilterOpen ? 'opacity-100 backdrop-blur-sm' : 'opacity-0'
+          }`}
+          onClick={toggleFilter}
+        />
+
+        {/* Filter Content */}
+        <div
+          className={`bg-bg-dark relative w-11/12 max-w-md transform rounded-lg p-6 shadow-lg transition-transform duration-300 ${
+            isFilterOpen ? 'scale-100 opacity-100' : 'scale-95 opacity-0'
+          }`}
+        >
+          <div className="border-border-b mb-4 flex items-center justify-between border-b pb-4">
+            <h2 className="text-xl font-bold">Filtrar Películas</h2>
+            <button onClick={toggleFilter} className="cursor-pointer p-2">
+              <XMarkIcon className="h-6 w-6" />
+            </button>
+          </div>
+
+          <form onSubmit={onSubmitFilter}>
+            {/* Year Range Filter */}
+            <div className="mb-4">
+              <h3 className="mb-2 text-lg font-semibold">Año</h3>
+              <div className="flex space-x-4">
+                <input
+                  type="number"
+                  min="1900"
+                  value={year || ''}
+                  onChange={(e) => setYear(Number(e.target.value))}
+                  max={new Date().getFullYear()}
+                  placeholder="Año"
+                  className="bg-bg border-border text-text w-1/2 rounded-md border p-2"
+                />
+              </div>
+            </div>
+
+            {/* Category Filter */}
+            <div className="mb-4">
+              <h3 className="mb-2 text-lg font-semibold">Género</h3>
+              <select
+                value={genre}
+                onChange={(e) => setGenre(e.target.value)}
+                className="bg-bg border-border text-text w-full rounded-md border p-2"
+              >
+                <option value="" className="text-text-muted">
+                  Escoger Género
+                </option>
+                {genres.map(({ name, id }) => (
+                  <option key={id} value={id} className="text-text-muted">
+                    {name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="flex items-stretch justify-end space-x-4">
+              <button
+                type="button"
+                className="bg-danger text-text-inverted hover:bg-danger-muted-muted cursor-pointer rounded-md px-4 py-2 font-semibold"
+                onClick={() => handleResetFilters()}
+              >
+                Remover Filtros
+              </button>
+              <button
+                type="submit"
+                className="bg-primary text-text-inverted hover:bg-primary-muted cursor-pointer rounded-md px-4 py-2 font-semibold"
+              >
+                Aplicar Filtros
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </header>

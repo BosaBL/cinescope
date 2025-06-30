@@ -1,297 +1,133 @@
-Welcome to your new TanStack app!
+# CineScope 🎬
 
-# Getting Started
+¡Bienvenido a CineScope! Este proyecto es una aplicación web moderna que te permite descubrir, buscar y guardar tus películas favoritas en una lista personal. 🍿
 
-To run this application:
+## 🚀 Resumen del Proyecto
 
-```bash
-pnpm install
-pnpm start
+CineScope es una aplicación web interactiva diseñada para los amantes del cine. Con una interfaz de usuario limpia y fácil de usar, puedes explorar una vasta colección de películas, ver detalles como la sinopsis, el reparto y la calificación, y añadirlas a tu propia lista de seguimiento.
+
+### ✨ Características Principales
+
+- **Explora Películas**: Descubre películas populares y tendencias.
+- **Búsqueda Avanzada**: Encuentra películas por título, año de lanzamiento y más.
+- **Detalles de la Película**: Obtén información completa sobre cada película.
+- **Lista de Seguimiento**: Guarda tus películas favoritas para verlas más tarde.
+- **Diseño Responsivo**: Disfruta de una experiencia perfecta en cualquier dispositivo.
+
+## 🛠️ Cómo Instalar
+
+Para empezar a usar CineScope, sigue estos sencillos pasos:
+
+1. **Clona el Repositorio**:
+
+   ```bash
+   git clone https://github.com/tu-usuario/cinescope.git
+   cd cinescope
+   ```
+
+2. **Instala las Dependencias**:
+   Asegúrate de tener [Node.js](https://nodejs.org/) y [pnpm](https://pnpm.io/) instalados.
+
+   ```bash
+   pnpm install
+   ```
+
+3. **Configura las Variables de Entorno**:
+   Crea un archivo `.env` en la raíz del proyecto y añade tu clave de API de [The Movie Database (TMDb)](https://www.themoviedb.org/):
+
+   ```
+   VITE_API_KEY=tu_clave_de_api_de_tmdb
+   ```
+
+4. **Inicia la Aplicación**:
+
+   ```bash
+   pnpm dev
+   ```
+
+   ¡Y listo! La aplicación estará disponible en `http://localhost:3000`.
+
+## 🚀 Probando el Build de Producción
+
+Para probar la versión de producción de la aplicación, puedes seguir estos pasos:
+
+1. **Genera el Build**:
+   Este comando compilará y optimizará los archivos de la aplicación para producción en el directorio `dist/`.
+
+   ```bash
+   pnpm build
+   ```
+
+2. **Sirve el Build Localmente**:
+   Este comando iniciará un servidor local para servir los archivos estáticos generados en el paso anterior.
+
+   ```bash
+   pnpm serve
+   ```
+
+   La aplicación estará disponible en la URL que se muestre en la terminal (generalmente `http://localhost:4173`).
+
+## 🔧 Detalles Técnicos
+
+### 🏗️ Arquitectura
+
+CineScope está construido con una arquitectura de componentes moderna, utilizando **React** y **Vite** para un desarrollo rápido y eficiente. La gestión del estado se maneja a través de hooks de React y el enrutamiento se gestiona con **TanStack Router**, lo que permite una navegación fluida y optimizada.
+
+### 💻 Tecnologías Principales
+
+- **Frontend**:
+  - [React](https://reactjs.org/)
+  - [Vite](https://vitejs.dev/)
+  - [TypeScript](https://www.typescriptlang.org/)
+- **Enrutamiento**:
+  - [TanStack Router](https://tanstack.com/router/)
+- **Estilos**:
+  - [Tailwind CSS](https://tailwindcss.com/)
+- **Llamadas a la API**:
+  - [Axios](https://axios-http.com/)
+- **Linting y Formateo**:
+  - [ESLint](https://eslint.org/)
+  - [Prettier](https://prettier.io/)
+
+### 🌐 Gestión de Estado de Filtros en la URL
+
+CineScope aprovecha la URL para gestionar el estado de los filtros de búsqueda y descubrimiento de películas. En lugar de manejar este estado internamente en los componentes, los parámetros de filtrado (como el término de búsqueda, la página de resultados o el año de lanzamiento) se codifican directamente en los parámetros de búsqueda de la URL.
+
+Este enfoque, facilitado por **TanStack Router**, ofrece varias ventajas clave:
+
+- **Compartir y Marcar como Favorito**: Las URLs se vuelven una representación directa del estado de la vista actual. Esto permite a los usuarios compartir enlaces a resultados de búsqueda específicos o guardar vistas filtradas en sus marcadores.
+- **Navegación del Historial**: El estado se integra con el historial del navegador, permitiendo a los usuarios usar los botones de "atrás" y "adelante" de forma intuitiva para navegar entre diferentes estados de filtro.
+- **Fuente Única de Verdad**: La URL se convierte en la única fuente de verdad para el estado de los filtros, simplificando la lógica de la aplicación y evitando problemas de sincronización entre el estado de los componentes y la URL.
+- **Re-renderizado predecible**: Cuando la URL cambia, TanStack Router vuelve a cargar los datos necesarios, lo que garantiza que la interfaz de usuario siempre refleje el estado actual de la URL.
+
+### 💡 Uso de `localStorage`
+
+Una característica clave de CineScope es la capacidad de guardar películas en una "lista de seguimiento" personal. Esta funcionalidad se implementa utilizando `localStorage` del navegador, lo que permite que los datos persistan entre sesiones sin necesidad de una base de datos o autenticación de usuario.
+
+- **Persistencia de Datos**: Las películas que un usuario agrega a su lista se guardan directamente en su navegador.
+- **Sincronización de Componentes**: Para asegurar que la interfaz de usuario se actualice en tiempo real cuando se modifica la lista (por ejemplo, al agregar o eliminar una película), se despacha un evento personalizado (`localStorageUpdate`). Varios componentes escuchan este evento y se vuelven a renderizar para reflejar el estado más reciente de la lista de seguimiento.
+- **Servicio Centralizado**: La lógica para interactuar con `localStorage` está encapsulada en el servicio `src/services/watchlist.ts`, lo que proporciona un único punto de verdad para la gestión de la lista de seguimiento.
+
+### 📂 Estructura de Archivos
+
+El proyecto sigue una estructura organizada para facilitar el mantenimiento y la escalabilidad:
+
+```
+/
+├── public/              # Archivos estáticos (íconos, manifiesto)
+├── src/
+│   ├── components/      # Componentes reutilizables de React
+│   ├── hooks/           # Hooks personalizados (ej. useTitle)
+│   ├── routes/          # Componentes de página y layouts de ruta
+│   ├── services/        # Lógica para APIs externas (TMDb)
+│   ├── main.tsx         # Punto de entrada principal de la aplicación
+│   └── styles.css       # Estilos globales
+├── package.json         # Dependencias y scripts del proyecto
+├── vite.config.ts       # Configuración de Vite
+├── tailwind.config.ts   # Configuración de Tailwind CSS
+└── tsconfig.json        # Configuración de TypeScript
 ```
 
-# Building For Production
+---
 
-To build this application for production:
-
-```bash
-pnpm build
-```
-
-## Testing
-
-This project uses [Vitest](https://vitest.dev/) for testing. You can run the tests with:
-
-```bash
-pnpm test
-```
-
-## Styling
-
-This project uses [Tailwind CSS](https://tailwindcss.com/) for styling.
-
-## Linting & Formatting
-
-This project uses [eslint](https://eslint.org/) and [prettier](https://prettier.io/) for linting and formatting. Eslint is configured using [tanstack/eslint-config](https://tanstack.com/config/latest/docs/eslint). The following scripts are available:
-
-```bash
-pnpm lint
-pnpm format
-pnpm check
-```
-
-## Routing
-
-This project uses [TanStack Router](https://tanstack.com/router). The initial setup is a file based router. Which means that the routes are managed as files in `src/routes`.
-
-### Adding A Route
-
-To add a new route to your application just add another a new file in the `./src/routes` directory.
-
-TanStack will automatically generate the content of the route file for you.
-
-Now that you have two routes you can use a `Link` component to navigate between them.
-
-### Adding Links
-
-To use SPA (Single Page Application) navigation you will need to import the `Link` component from `@tanstack/react-router`.
-
-```tsx
-import { Link } from '@tanstack/react-router'
-```
-
-Then anywhere in your JSX you can use it like so:
-
-```tsx
-<Link to="/about">About</Link>
-```
-
-This will create a link that will navigate to the `/about` route.
-
-More information on the `Link` component can be found in the [Link documentation](https://tanstack.com/router/v1/docs/framework/react/api/router/linkComponent).
-
-### Using A Layout
-
-In the File Based Routing setup the layout is located in `src/routes/__root.tsx`. Anything you add to the root route will appear in all the routes. The route content will appear in the JSX where you use the `<Outlet />` component.
-
-Here is an example layout that includes a header:
-
-```tsx
-import { Outlet, createRootRoute } from '@tanstack/react-router'
-import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
-
-import { Link } from '@tanstack/react-router'
-
-export const Route = createRootRoute({
-  component: () => (
-    <>
-      <header>
-        <nav>
-          <Link to="/">Home</Link>
-          <Link to="/about">About</Link>
-        </nav>
-      </header>
-      <Outlet />
-      <TanStackRouterDevtools />
-    </>
-  ),
-})
-```
-
-The `<TanStackRouterDevtools />` component is not required so you can remove it if you don't want it in your layout.
-
-More information on layouts can be found in the [Layouts documentation](https://tanstack.com/router/latest/docs/framework/react/guide/routing-concepts#layouts).
-
-## Data Fetching
-
-There are multiple ways to fetch data in your application. You can use TanStack Query to fetch data from a server. But you can also use the `loader` functionality built into TanStack Router to load the data for a route before it's rendered.
-
-For example:
-
-```tsx
-const peopleRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/people',
-  loader: async () => {
-    const response = await fetch('https://swapi.dev/api/people')
-    return response.json() as Promise<{
-      results: {
-        name: string
-      }[]
-    }>
-  },
-  component: () => {
-    const data = peopleRoute.useLoaderData()
-    return (
-      <ul>
-        {data.results.map((person) => (
-          <li key={person.name}>{person.name}</li>
-        ))}
-      </ul>
-    )
-  },
-})
-```
-
-Loaders simplify your data fetching logic dramatically. Check out more information in the [Loader documentation](https://tanstack.com/router/latest/docs/framework/react/guide/data-loading#loader-parameters).
-
-### React-Query
-
-React-Query is an excellent addition or alternative to route loading and integrating it into you application is a breeze.
-
-First add your dependencies:
-
-```bash
-pnpm add @tanstack/react-query @tanstack/react-query-devtools
-```
-
-Next we'll need to create a query client and provider. We recommend putting those in `main.tsx`.
-
-```tsx
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-
-// ...
-
-const queryClient = new QueryClient()
-
-// ...
-
-if (!rootElement.innerHTML) {
-  const root = ReactDOM.createRoot(rootElement)
-
-  root.render(
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-    </QueryClientProvider>,
-  )
-}
-```
-
-You can also add TanStack Query Devtools to the root route (optional).
-
-```tsx
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-
-const rootRoute = createRootRoute({
-  component: () => (
-    <>
-      <Outlet />
-      <ReactQueryDevtools buttonPosition="top-right" />
-      <TanStackRouterDevtools />
-    </>
-  ),
-})
-```
-
-Now you can use `useQuery` to fetch your data.
-
-```tsx
-import { useQuery } from '@tanstack/react-query'
-
-import './App.css'
-
-function App() {
-  const { data } = useQuery({
-    queryKey: ['people'],
-    queryFn: () =>
-      fetch('https://swapi.dev/api/people')
-        .then((res) => res.json())
-        .then((data) => data.results as { name: string }[]),
-    initialData: [],
-  })
-
-  return (
-    <div>
-      <ul>
-        {data.map((person) => (
-          <li key={person.name}>{person.name}</li>
-        ))}
-      </ul>
-    </div>
-  )
-}
-
-export default App
-```
-
-You can find out everything you need to know on how to use React-Query in the [React-Query documentation](https://tanstack.com/query/latest/docs/framework/react/overview).
-
-## State Management
-
-Another common requirement for React applications is state management. There are many options for state management in React. TanStack Store provides a great starting point for your project.
-
-First you need to add TanStack Store as a dependency:
-
-```bash
-pnpm add @tanstack/store
-```
-
-Now let's create a simple counter in the `src/App.tsx` file as a demonstration.
-
-```tsx
-import { useStore } from '@tanstack/react-store'
-import { Store } from '@tanstack/store'
-import './App.css'
-
-const countStore = new Store(0)
-
-function App() {
-  const count = useStore(countStore)
-  return (
-    <div>
-      <button onClick={() => countStore.setState((n) => n + 1)}>
-        Increment - {count}
-      </button>
-    </div>
-  )
-}
-
-export default App
-```
-
-One of the many nice features of TanStack Store is the ability to derive state from other state. That derived state will update when the base state updates.
-
-Let's check this out by doubling the count using derived state.
-
-```tsx
-import { useStore } from '@tanstack/react-store'
-import { Store, Derived } from '@tanstack/store'
-import './App.css'
-
-const countStore = new Store(0)
-
-const doubledStore = new Derived({
-  fn: () => countStore.state * 2,
-  deps: [countStore],
-})
-doubledStore.mount()
-
-function App() {
-  const count = useStore(countStore)
-  const doubledCount = useStore(doubledStore)
-
-  return (
-    <div>
-      <button onClick={() => countStore.setState((n) => n + 1)}>
-        Increment - {count}
-      </button>
-      <div>Doubled - {doubledCount}</div>
-    </div>
-  )
-}
-
-export default App
-```
-
-We use the `Derived` class to create a new store that is derived from another store. The `Derived` class has a `mount` method that will start the derived store updating.
-
-Once we've created the derived store we can use it in the `App` component just like we would any other store using the `useStore` hook.
-
-You can find out everything you need to know on how to use TanStack Store in the [TanStack Store documentation](https://tanstack.com/store/latest).
-
-# Demo files
-
-Files prefixed with `demo` can be safely deleted. They are there to provide a starting point for you to play around with the features you've installed.
-
-# Learn More
-
-You can learn more about all of the offerings from TanStack in the [TanStack documentation](https://tanstack.com).
+¡Gracias por visitar CineScope! Si tienes alguna pregunta o sugerencia, no dudes en abrir un issue. 😊

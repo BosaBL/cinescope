@@ -18,7 +18,7 @@ export function MovieDetails() {
 
   useEffect(() => {
     const handleStorageChange = () => {
-      setIsInWatchlist(checkIsInWatchlist(movie.id))
+      setIsInWatchlist(() => checkIsInWatchlist(movie.id))
     }
 
     window.addEventListener('localStorageUpdate', handleStorageChange)
@@ -81,7 +81,7 @@ export function MovieDetails() {
             </div>
 
             <div className="flex space-x-4">
-              {isInWatchlist ? (
+              {!isInWatchlist ? (
                 <button
                   onClick={() => onToggleWatchlist(movie)}
                   className="bg-primary hover:bg-primary-muted flex cursor-pointer items-center gap-x-2 rounded-lg px-6 py-3 font-medium transition-all"

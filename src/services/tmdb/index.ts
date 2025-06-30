@@ -1,6 +1,7 @@
 import axios from 'axios'
 import type {
   DiscoverMoviesFilters,
+  Genre,
   Movie,
   MovieDetails,
   PaginatedResponse,
@@ -67,6 +68,13 @@ export const getMovieDetails = async (
   movieId: number,
 ): Promise<MovieDetails> => {
   const response = await tmdbApiClient.get<MovieDetails>(`/movie/${movieId}`)
+  return response.data
+}
+
+export const getGenres = async (): Promise<{ genres: Array<Genre> }> => {
+  const response = await tmdbApiClient.get<{ genres: Array<Genre> }>(
+    '/genre/movie/list',
+  )
   return response.data
 }
 

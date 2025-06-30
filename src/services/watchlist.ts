@@ -52,6 +52,11 @@ export function isInWatchlist(movieId: number): boolean {
   return watchlist.some((m) => m.id === movieId)
 }
 
+/**
+ * Elimina o agrega una pelicula a la lista. Si ya se encuentra en la lista,
+ * se elimina; si no, se agrega.
+ * @param movie - Pelicula que se quiere añadir/remover de la lista.
+ */
 export function onToggleWatchlist(movie: Movie) {
   if (isInWatchlist(movie.id)) {
     removeFromWatchlist(movie.id)

@@ -26,7 +26,13 @@ export function SearchField({ className = '' }: SearchFieldProps) {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
-    navigate({ to: '/', search: { query: searchTerm } })
+    navigate({
+      to: '/',
+      search: ({ primary_release_year }) => ({
+        query: searchTerm || undefined,
+        primary_release_year,
+      }),
+    })
   }
   return (
     <div className={`relative ${className}`}>

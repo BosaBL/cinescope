@@ -11,6 +11,11 @@ export interface PaginatedResponse<T> {
 
 // --- Tipos de Medios Principales ---
 
+export interface Genre {
+  id: number
+  name: string
+}
+
 export interface Movie {
   adult: boolean
   backdrop_path: string | null
@@ -62,7 +67,7 @@ export interface Person {
 export interface MovieDetails extends Movie {
   belongs_to_collection: object | null
   budget: number
-  genres: Array<{ id: number; name: string }>
+  genres: Array<Genre>
   homepage: string | null
   imdb_id: string | null
   production_companies: Array<{
@@ -95,7 +100,7 @@ export interface TvShowDetails extends TvShow {
     profile_path: string | null
   }>
   episode_run_time: Array<number>
-  genres: Array<{ id: number; name: string }>
+  genres: Array<Genre>
   homepage: string | null
   in_production: boolean
   languages: Array<string>
@@ -190,6 +195,10 @@ export interface DiscoverMoviesFilters {
    * El número de página a obtener.
    */
   page?: number
+  /**
+   * El año de la película a buscar.
+   */
+  primary_release_year?: number
 }
 
 // --- Tipos para la Función de Búsqueda ---
@@ -206,4 +215,8 @@ export interface SearchMoviesParams {
    * El número de página a obtener.
    */
   page?: number
+  /**
+   * El año de la película a buscar.
+   */
+  primary_release_year?: number
 }

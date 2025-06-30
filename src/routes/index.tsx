@@ -15,6 +15,7 @@ export const Route = createFileRoute('/')({
       return {
         query: search.query,
         page: search.page ?? 1,
+        primary_release_year: search.primary_release_year,
       }
     }
 
