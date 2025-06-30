@@ -39,9 +39,11 @@ export function NavigationBar() {
     updateWatchlistCount()
 
     window.addEventListener('localStorageUpdate', updateWatchlistCount)
+    window.addEventListener('storage', updateWatchlistCount)
 
     return () => {
       window.removeEventListener('localStorageUpdate', updateWatchlistCount)
+      window.removeEventListener('storage', updateWatchlistCount)
     }
   }, [])
 
@@ -70,6 +72,10 @@ export function NavigationBar() {
   const handleResetFilters = () => {
     setGenre('')
     setYear(0)
+    toggleFilter()
+    navigate({
+      to: '/',
+    })
   }
 
   const onSubmitFilter = (e: React.FormEvent<HTMLFormElement>) => {
@@ -137,7 +143,9 @@ export function NavigationBar() {
               <div className="hidden items-center space-x-2 md:flex">
                 <SearchField />
                 <button onClick={toggleFilter} className="cursor-pointer p-2">
-                  <FunnelIcon className="h-6 w-6" />
+                  <FunnelIcon
+                    className={`h-6 w-6 ${(genre || year) && 'text-primary'} transition-all duration-300`}
+                  />
                 </button>
               </div>
 
