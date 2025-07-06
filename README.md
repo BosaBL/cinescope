@@ -6,6 +6,23 @@
 
 CineScope es una aplicación web interactiva diseñada para los amantes del cine. Con una interfaz de usuario limpia y fácil de usar, puedes explorar una vasta colección de películas, ver detalles como la sinopsis, el reparto y la calificación, y añadirlas a tu propia lista de seguimiento.
 
+### ✨ Rutas de la Aplicación
+
+La aplicación cuenta con las siguientes rutas principales, gestionadas con **TanStack Router**:
+
+- **`/` (Inicio)**: La página principal que muestra las películas populares. Permite a los usuarios descubrir y buscar películas.
+- **`/details/$movieId`**: Muestra los detalles completos de una película específica, incluyendo su sinopsis, reparto y calificación.
+- **`/watchList`**: Una lista personal donde los usuarios pueden ver las películas que han guardado.
+
+### 🎬 Uso de The Movie Database (TMDb)
+
+CineScope utiliza la **API de The Movie Database (TMDb)** como fuente principal para obtener toda la información relacionada con las películas. La interacción con la API está centralizada en el servicio `src/services/tmdb/index.ts`, que se encarga de realizar las siguientes operaciones:
+
+- **Descubrir Películas**: Obtiene una lista de películas populares y tendencias.
+- **Buscar Películas**: Permite a los usuarios buscar películas por título.
+- **Detalles de la Película**: Recupera información detallada de una película específica.
+- **Obtener Géneros**: Carga la lista de géneros disponibles para filtrar las películas.
+
 ### ✨ Características Principales
 
 - **Explora Películas**: Descubre películas populares y tendencias.
@@ -21,7 +38,7 @@ Para empezar a usar CineScope, sigue estos sencillos pasos:
 1. **Clona el Repositorio**:
 
    ```bash
-   git clone https://github.com/tu-usuario/cinescope.git
+   git clone https://github.com/BosaBL/cinescope.git
    cd cinescope
    ```
 
@@ -129,5 +146,3 @@ El proyecto sigue una estructura organizada para facilitar el mantenimiento y la
 ```
 
 ---
-
-¡Gracias por visitar CineScope! Si tienes alguna pregunta o sugerencia, no dudes en abrir un issue. 😊
