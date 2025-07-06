@@ -66,6 +66,14 @@ export function NavigationBar() {
   }
 
   const toggleFilter = () => {
+    if (isFilterOpen) {
+      if (!search.with_genres) {
+        setGenre(search.with_genres || '')
+      }
+      if (!search.primary_release_year) {
+        setYear(search.primary_release_year || 0)
+      }
+    }
     setIsFilterOpen(!isFilterOpen)
   }
 
@@ -168,7 +176,7 @@ export function NavigationBar() {
             </div>
           </nav>
 
-          {/* Mobile Search Bar Overlay */}
+          {/* Mobile Search Bar Backdrop */}
           <div
             className={`bg-bg-dark absolute top-0 left-0 w-full rounded-2xl p-4 shadow-lg transition-transform duration-300 md:hidden ${
               isSearchOpen ? 'translate-y-0' : '-translate-y-full'
