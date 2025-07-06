@@ -27,7 +27,13 @@ export function NavigationBar() {
   useEffect(() => {
     if ('with_genres' in search) {
       setGenre(search.with_genres || '')
+    } else {
+      setGenre('')
+    }
+    if ('primary_release_year' in search) {
       setYear(search.primary_release_year || 0)
+    } else {
+      setYear(0)
     }
   }, [search])
 
