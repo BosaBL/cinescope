@@ -56,7 +56,7 @@ Para empezar a usar CineScope, sigue estos sencillos pasos:
    VITE_API_KEY=tu_clave_de_api_de_tmdb
    ```
 
-4. **Inicia la Aplicación**:
+4. **Inicia la Aplicación (en modo desarrollo, ver [🚀 Probando el Build de Producción](https://github.com/BosaBL/cinescope?tab=readme-ov-file#-probando-el-build-de-producci%C3%B3n) para iniciar en entorno de producción)**:
 
    ```bash
    pnpm dev
@@ -65,6 +65,10 @@ Para empezar a usar CineScope, sigue estos sencillos pasos:
    ¡Y listo! La aplicación estará disponible en `http://localhost:3000`.
 
 ## 🚀 Probando el Build de Producción
+
+[!IMPORTANT]
+
+> Se recomienda usar esta opción para evaluar la aplicación. Esto se debe a que el entorno de desarrollo posee herramientas de depuración que pueden alterar la estética del sitio (como por ejemplo, Tanstack Router DevTools). Además, React tiene un mecanismo que hace que todos los componentes se rendericen dos veces en un entorno de desarrollo para detectar casos de frontera.
 
 Para probar la versión de producción de la aplicación, puedes seguir estos pasos:
 
