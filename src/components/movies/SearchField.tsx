@@ -16,6 +16,8 @@ export function SearchField({ className = '' }: SearchFieldProps) {
   useEffect(() => {
     if ('query' in search) {
       setSearchTerm(search.query || '')
+    } else {
+      setSearchTerm('')
     }
   }, [search])
 
