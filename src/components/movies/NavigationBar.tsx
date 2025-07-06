@@ -105,7 +105,14 @@ export function NavigationBar() {
         <div className="relative">
           <nav className="flex h-16 items-center justify-between md:items-stretch">
             <div className="flex space-x-8">
-              <Link to="/" className="flex h-full cursor-pointer items-center">
+              <Link
+                to="/"
+                search={({ query, ...rest }) => ({
+                  ...rest,
+                  sort_by: 'popularity.desc',
+                })}
+                className="flex h-full cursor-pointer items-center"
+              >
                 <h1 className="text-2xl font-bold">
                   Cine
                   <span className="from-primary to-accent bg-gradient-to-r bg-clip-text text-transparent">
@@ -121,7 +128,10 @@ export function NavigationBar() {
                     to="/"
                     className="group relative flex h-full items-center"
                     activeProps={{ className: 'font-bold active' }}
-                    search={{ sort_by: 'popularity.desc' }}
+                    search={({ query, ...rest }) => ({
+                      ...rest,
+                      sort_by: 'popularity.desc',
+                    })}
                   >
                     Inicio
                     <div className="bg-primary absolute bottom-0 left-0 h-1 w-0 rounded-full transition-all duration-300 group-[.active]:w-full" />
@@ -216,7 +226,14 @@ export function NavigationBar() {
           }`}
         >
           <div className="border-border flex items-center justify-between border-b p-4">
-            <Link to="/" onClick={toggleMenu}>
+            <Link
+              search={({ query, ...rest }) => ({
+                ...rest,
+                sort_by: 'popularity.desc',
+              })}
+              to="/"
+              onClick={toggleMenu}
+            >
               <h1 className="text-2xl font-bold">
                 Cine
                 <span className="from-primary to-accent bg-gradient-to-r bg-clip-text text-transparent">
@@ -234,6 +251,10 @@ export function NavigationBar() {
                 to="/"
                 className="group relative flex items-center"
                 activeProps={{ className: 'font-bold active pl-2' }}
+                search={({ query, ...rest }) => ({
+                  ...rest,
+                  sort_by: 'popularity.desc',
+                })}
                 onClick={toggleMenu}
               >
                 Inicio
