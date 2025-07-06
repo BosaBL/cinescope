@@ -66,8 +66,7 @@ Para empezar a usar CineScope, sigue estos sencillos pasos:
 
 ## 🚀 Probando el Build de Producción
 
-[!IMPORTANT]
-
+> [!IMPORTANT]
 > Se recomienda usar esta opción para evaluar la aplicación. Esto se debe a que el entorno de desarrollo posee herramientas de depuración que pueden alterar la estética del sitio (como por ejemplo, Tanstack Router DevTools). Además, React tiene un mecanismo que hace que todos los componentes se rendericen dos veces en un entorno de desarrollo para detectar casos de frontera.
 
 Para probar la versión de producción de la aplicación, puedes seguir estos pasos:
