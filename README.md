@@ -2,6 +2,9 @@
 
 ¡Bienvenido a CineScope! Este proyecto es una aplicación web moderna que te permite descubrir, buscar y guardar tus películas favoritas en una lista personal. 🍿
 
+## 🧑‍💻 Demo
+![Descargar Demo](https://github.com/BosaBL/cinescope/raw/refs/heads/main/docs/demo.mp4)
+
 ## 🚀 Resumen del Proyecto
 
 CineScope es una aplicación web interactiva diseñada para los amantes del cine. Con una interfaz de usuario limpia y fácil de usar, puedes explorar una vasta colección de películas, ver detalles como la sinopsis, el reparto y la calificación, y añadirlas a tu propia lista de seguimiento.
